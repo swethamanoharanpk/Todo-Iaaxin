@@ -49,6 +49,8 @@ export const ToDo = () => {
     }
   }, [todos, completed]);
 
+
+
   const handleAdd = () => {
     if (todo && category && dueDate) {
       const newTask = { text: todo, category, dueDate };
@@ -58,6 +60,12 @@ export const ToDo = () => {
       setDueDate("");
     }
   };
+
+
+
+  
+
+
 
   const handleDelete = (index) => {
     if (filter === "completed") {
@@ -106,6 +114,34 @@ export const ToDo = () => {
       task.text.toLowerCase().includes(searchTerm.toLowerCase())
     );
   };
+
+
+
+
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.key === "Enter") {
+        e.preventDefault();
+        console.log("Ctrl + Enter pressed", { todo, category, dueDate, edit });
+        if (!edit) {
+          handleAdd();
+        } else {
+          handleUpdate();
+        }
+      }
+  
+      if (e.ctrlKey && e.key.toLowerCase() === "d") {
+        e.preventDefault();
+        toggleTheme();
+      }
+    };
+  
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [todo, category, dueDate, edit, editIndex, toggleTheme]);
+
+
 
   return (
     <div
